@@ -1,0 +1,26 @@
+[gd_scene load_steps=3 format=2]
+
+[sub_resource type="Shader" id=3]
+code = "shader_type canvas_item;
+
+
+const float WIDTH = 0.1;
+
+
+void fragment() {
+	COLOR = vec4(vec3(1.0, 0.0, 0.25), float(
+		abs(UV.x - UV.y) <= WIDTH ||
+		abs(1.0 - UV.x - UV.y) <= WIDTH
+	));
+}
+"
+
+[sub_resource type="ShaderMaterial" id=4]
+shader = SubResource( 3 )
+
+[node name="cross" type="ColorRect"]
+visible = false
+material = SubResource( 4 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2

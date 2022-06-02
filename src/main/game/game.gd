@@ -94,13 +94,29 @@ func cancel_reset() -> void:
 
 
 func confirm_reset() -> void:
-	player_count = pending_player_count
-	playing = true
-	time = 0.0
 	set_turn(0)
 	for i in range($horizontal/menu/vertical/players.get_child_count()):
 		$horizontal/menu/vertical/players.get_child(i).visible = i < player_count
 	$panel/animation.play_backwards("main")
+	player_count = pending_player_count
+	set_turn(0)
+	playing = true
+	time    = 0.0
+	links   = []
+	for child in $horizontal/board_container/board_margin/links.get_children():
+		child.queue_free()
+	allowed_boards_original = BOARD_RESET.duplicate()
+	allowed_boards          = BOARD_RESET.duplicate()
+	pending_link            = null
+	pending_link_slot       = null
+	won_boards              = {}
+	for small_board in $horizontal/board_container/board_margin/board.get_children():
+		small_board.set_side(-1)
+		for slot in small_board.get_node("grid").get_children():
+			slot.set_side(-1)
+	update_wins()
+	update_small_boards()
+	update_slots()
 
 
 

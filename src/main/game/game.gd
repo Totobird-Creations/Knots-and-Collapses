@@ -25,7 +25,7 @@ var won_boards              : Dictionary = {}
 
 
 func set_turn(value : int) -> void:
-	turn = value % 4
+	turn = value % 2
 	update_slots()
 
 func update_slots() -> void:
@@ -70,12 +70,12 @@ func link_slot(next_slot : Node) -> void:
 		var source := [pending_link_slot, next_slot, pending_link.side]
 		pending_link = null
 		pending_link_slot = null
-		links.append(source)
-		if (loop_found(links, next_slot)):
+		if (loop_found(links + [source], next_slot)):
 			# Loop found. Collapse waveform.
 			remove_links(collapse(links, next_slot, turn))
-			remove_links(collapse(links, pending_link_slot, turn))
 			update_wins()
+		else:
+			links.append(source)
 		set_turn(turn + 1)
 	else:
 		pending_link_slot = next_slot
@@ -100,17 +100,6 @@ func add_pending_link() -> void:
 	pending_link = instance
 
 
-func remove_links(remove_links : Array) -> void:
-	var new_links := []
-	for link in links:
-		if (! (link[0] in remove_links || link[1] in remove_links)):
-			new_links.append(link)
-	links = new_links
-	for child in $horizontal/board_container/board_margin/links.get_children():
-		if (child.ends[0] in remove_links || child.ends[1] in remove_links):
-			child.queue_free()
-
-
 func loop_found(links : Array, source : Node, passed : Array = []) -> bool:
 	if (source in passed):
 		return true
@@ -128,17 +117,28 @@ func loop_found(links : Array, source : Node, passed : Array = []) -> bool:
 	return false
 
 
-func collapse(links : Array, source : Node, side : int) -> Array:
+func collapse(links : Array, source : Node, side : int, skip : Array = []) -> Array:
+	if (source in skip):
+		return []
 	var res := [source]
-	source.side = side
+	source.set_side(side)
 	for link in links:
 		if (link[0] == source):
-			links.erase(link)
-			res += collapse(links, link[1], link[2])
+			res += collapse(links, link[1], link[2], skip + [source])
 		if (link[1] == source):
-			links.erase(link)
-			res += collapse(links, link[0], link[2])
+			res += collapse(links, link[0], link[2], skip + [source])
 	return res
+
+
+func remove_links(remove_links : Array) -> void:
+	var new_links := []
+	for link in links:
+		if (! (link[0] in remove_links || link[1] in remove_links)):
+			new_links.append(link)
+	links = new_links
+	for child in $horizontal/board_container/board_margin/links.get_children():
+		if (child.ends[0] in remove_links || child.ends[1] in remove_links):
+			child.queue_free()
 
 
 func update_wins() -> void:
@@ -146,4 +146,4 @@ func update_wins() -> void:
 		var board := $horizontal/board_container/board_margin/board.get_child(i)
 		if (won_boards.get(i, -1) == -1):
 			won_boards[i] = board.calculate_winner()
-		board.update_small_board(self)
+			board.set_side(won_boards[i])

@@ -10,6 +10,7 @@ glow_levels/1 = true
 glow_levels/2 = true
 glow_levels/3 = false
 glow_levels/5 = false
+glow_intensity = 0.4
 glow_blend_mode = 0
 glow_hdr_threshold = 0.5
 glow_bicubic_upscale = true
@@ -31,25 +32,25 @@ margin_bottom = -64.0
 mouse_filter = 2
 
 [node name="board_container" type="AspectRatioContainer" parent="horizontal"]
-margin_right = 896.0
-margin_bottom = 472.0
+margin_right = 1920.0
+margin_bottom = 1072.0
 mouse_filter = 2
 size_flags_horizontal = 3
 
 [node name="board_margin" type="MarginContainer" parent="horizontal/board_container"]
-margin_left = 212.0
-margin_right = 684.0
-margin_bottom = 472.0
+margin_left = 424.0
+margin_right = 1496.0
+margin_bottom = 1072.0
 mouse_filter = 2
 
 [node name="board" parent="horizontal/board_container/board_margin" instance=ExtResource( 1 )]
-margin_right = 472.0
-margin_bottom = 472.0
+margin_right = 1072.0
+margin_bottom = 1072.0
 mouse_filter = 2
 
 [node name="links" type="Control" parent="horizontal/board_container/board_margin"]
-margin_right = 472.0
-margin_bottom = 472.0
+margin_right = 1072.0
+margin_bottom = 1072.0
 mouse_filter = 2
 
 [node name="environment" type="WorldEnvironment" parent="."]

@@ -1,19 +1,17 @@
 extends Button
 
 
-
 var game    : Node
 
-var player  : int  = -1
+var side    : int  = -1
 var hovered : bool = false
-
 
 
 func update_slot(new_game : Node) -> void:
 	game = new_game
 	var turn : int = game.turn
-	if (player >= 0):
-		turn = player
+	if (side >= 0):
+		turn = side
 		$icon.modulate.a = 1.0
 	else:
 		$icon.modulate.a = 0.0
@@ -21,8 +19,7 @@ func update_slot(new_game : Node) -> void:
 	for i in range($icon.get_child_count()):
 		$icon.get_child(i).visible = turn == i
 
-	disabled = game.allowed_small_boards[get_parent().get_index()] <= 0
-
+	disabled = side != -1 || game.allowed_boards[get_small_board_position()] <= 0
 
 
 func mouse_entered() -> void:
@@ -33,3 +30,7 @@ func mouse_exited() -> void:
 
 func pressed() -> void:
 	game.link_slot(self)
+
+
+func get_small_board_position() -> int:
+	return get_parent().get_parent().get_index()

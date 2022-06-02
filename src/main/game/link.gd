@@ -1,11 +1,18 @@
 extends Line2D
 
 
+var game : Node
 
-func update_link(game : Node) -> void:
+var ends : Array = []
+var side : int
+
+
+func update_link(new_game : Node) -> void:
+	game = new_game
 	for point in get_children():
 		for i in range(point.get_child(0).get_child_count()):
 			point.get_child(0).get_child(i).visible = game.turn == i
+	side          = game.turn
 	default_color = game.COLOURS[game.turn]
 
 

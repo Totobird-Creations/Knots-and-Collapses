@@ -20,6 +20,7 @@ shader = SubResource( 5 )
 
 [node name="nought" type="ColorRect"]
 visible = false
+modulate = Color( 2, 2, 2, 1 )
 material = SubResource( 6 )
 anchor_right = 1.0
 anchor_bottom = 1.0

@@ -6,7 +6,8 @@ const LINK        : PackedScene = preload("./link.tscn")
 const COLOURS     : Array       = [
 	Color(1.0, 0.0, 0.25),
 	Color(0.0, 0.5, 1.0),
-	Color(0.125, 1.0, 0.0)
+	Color(0.125, 1.0, 0.0),
+	Color(1.0, 0.375, 0.0)
 ]
 const BOARD_NONE  : Dictionary  = {0 : 0, 1 : 0, 2 : 0, 3 : 0, 4 : 0, 5 : 0, 6 : 0, 7 : 0, 8 : 0}
 const BOARD_RESET : Dictionary  = {0 : 1, 1 : 1, 2 : 1, 3 : 1, 4 : 1, 5 : 1, 6 : 1, 7 : 1, 8 : 1}
@@ -24,7 +25,7 @@ var won_boards              : Dictionary = {}
 
 
 func set_turn(value : int) -> void:
-	turn = value % 2
+	turn = value % 4
 	update_slots()
 
 func update_slots() -> void:
@@ -73,6 +74,7 @@ func link_slot(next_slot : Node) -> void:
 		if (loop_found(links, next_slot)):
 			# Loop found. Collapse waveform.
 			remove_links(collapse(links, next_slot, turn))
+			remove_links(collapse(links, pending_link_slot, turn))
 			update_wins()
 		set_turn(turn + 1)
 	else:

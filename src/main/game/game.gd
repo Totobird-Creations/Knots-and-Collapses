@@ -11,10 +11,14 @@ const COLOURS     : Array       = [
 ]
 const BOARD_NONE  : Dictionary  = {0 : 0, 1 : 0, 2 : 0, 3 : 0, 4 : 0, 5 : 0, 6 : 0, 7 : 0, 8 : 0}
 const BOARD_RESET : Dictionary  = {0 : 1, 1 : 1, 2 : 1, 3 : 1, 4 : 0, 5 : 1, 6 : 1, 7 : 1, 8 : 1}
-const BOARD_ALL   : Dictionary  = {0 : 1, 1 : 1, 2 : 1, 3 : 1, 4 : 1, 5 : 1, 6 : 1, 7 : 1, 8 : 1}
+const BOARD_ALL   : Dictionary  = {0 : 2, 1 : 2, 2 : 2, 3 : 2, 4 : 2, 5 : 2, 6 : 2, 7 : 2, 8 : 2}
 
-export(int, "Cross", "Nought", "Triangle") var turn := 0 setget set_turn
+export(int, 1, 4)                                    var player_count := 2
+export(int, "Cross", "Nought", "Triangle", "Square") var turn         := 0 setget set_turn
 
+var pending_player_count    : int
+var playing                 : bool       = false
+var time                    : float      = 0.0
 var links                   : Array      = []
 var allowed_boards_original : Dictionary = BOARD_RESET.duplicate()
 var allowed_boards          : Dictionary = BOARD_RESET.duplicate()
@@ -25,8 +29,10 @@ var won_boards              : Dictionary = {}
 
 
 func set_turn(value : int) -> void:
-	turn = value % 2
+	turn = value % player_count
 	update_slots()
+	for i in range($horizontal/menu/vertical/turn.get_child_count()):
+		$horizontal/menu/vertical/turn.get_child(i).visible = i == turn
 
 func update_small_boards() -> void:
 	for small_board in $horizontal/board_container/board_margin/board.get_children():
@@ -40,14 +46,23 @@ func update_slots() -> void:
 
 
 func _ready() -> void:
-	update_slots()
+	set_turn(0)
+	show_reset(false)
 
-func _physics_process(_delta : float) -> void:
+
+func _physics_process(delta : float) -> void:
 	if (pending_link):
 		pending_link.points = PoolVector2Array([
 			pending_link.points[0],
 			pending_link.get_local_mouse_position()
 		])
+	if (playing):
+		time += delta
+	var hours   := int(floor(time / 60.0 / 60.0)) % 60
+	var minutes := int(floor(time / 60.0)) % 60
+	var seconds := int(floor(time)) % 60
+	$horizontal/menu/vertical/timer.text = str(hours).pad_zeros(2) + ":" + str(minutes).pad_zeros(2) + ":" + str(seconds).pad_zeros(2)
+
 
 func _input(event : InputEvent) -> void:
 	if (event is InputEventMouseButton):
@@ -57,6 +72,35 @@ func _input(event : InputEvent) -> void:
 			pending_link = null
 			pending_link_slot = null
 			update_slots()
+
+
+
+func show_reset(show_cancel : bool = true) -> void:
+	set_player_count(2)
+	playing              = false
+	$panel/panel/vertical/horizontal/cancel.visible = show_cancel
+	$panel/animation.play("main")
+
+
+func set_player_count(value : int) -> void:
+	pending_player_count = value
+	for i in range($panel/panel/vertical/players.get_child_count()):
+		$panel/panel/vertical/players.get_child(i).modulate.a = float(i < pending_player_count) * 0.75 + 0.25
+
+
+func cancel_reset() -> void:
+	playing = true
+	$panel/animation.play_backwards("main")
+
+
+func confirm_reset() -> void:
+	player_count = pending_player_count
+	playing = true
+	time = 0.0
+	set_turn(0)
+	for i in range($horizontal/menu/vertical/players.get_child_count()):
+		$horizontal/menu/vertical/players.get_child(i).visible = i < player_count
+	$panel/animation.play_backwards("main")
 
 
 
@@ -152,3 +196,46 @@ func update_wins() -> void:
 		if (won_boards.get(i, -1) == -1):
 			won_boards[i] = board.calculate_winner()
 			board.set_side(won_boards[i])
+
+
+
+func calculate_winner() -> int:
+	var found : Dictionary = {}
+	var board := generate_2d_board()
+	for i in range(3):
+		# Check for row
+		var row : Array = board[i]
+		if (row[0] == row[1] && row[1] == row[2]):
+			if (! found.has(row[0])):
+				found[row[0]] = 0
+			found[row[0]] += 1
+		# Check for column
+		var column := [board[0][i], board[1][i], board[2][i]]
+		if (column[0] == column[1] && column[1] == column[2]):
+			if (! found.has(column[0])):
+				found[column[0]] = 0
+			found[column[0]] += 1
+	# Check for diagonal (TLBR)
+	var tlbr := [board[0][0], board[1][1], board[2][2]]
+	if (tlbr[0] == tlbr[1] && tlbr[1] == tlbr[2]):
+		if (! found.has(tlbr[0])):
+			found[tlbr[0]] = 0
+		found[tlbr[0]] += 1
+	# Check for diagonal (TRBL)
+	var trbl := [board[2][0], board[1][1], board[0][2]]
+	if (trbl[0] == trbl[1] && trbl[1] == trbl[2]):
+		if (! found.has(trbl[0])):
+			found[trbl[0]] = 0
+		found[trbl[0]] += 1
+	# Return found winner
+	found.erase(-1)
+	if (len(found.keys()) == 1):
+		return found.keys()[0]
+	return -1
+
+
+func generate_2d_board() -> Array:
+	var board := [[], [], []]
+	for i in $horizontal/board_container/board_margin/board.get_child_count():
+		board[floor(i / 3.0)].append($horizontal/board_container/board_margin/board.get_child(i).side)
+	return board

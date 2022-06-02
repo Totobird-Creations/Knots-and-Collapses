@@ -19,6 +19,7 @@ func set_side(value : int) -> void:
 	side = value
 	if (side != -1):
 		$animation.play("main")
+		get_parent().get_parent().get_parent().get_parent().get_parent().remove_links($grid.get_children())
 	for i in range($winner.get_child_count()):
 		$winner.get_child(i).visible = i == side
 

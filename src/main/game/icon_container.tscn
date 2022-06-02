@@ -1,84 +1,13 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://main/game/icon/cross.tscn" type="PackedScene" id=1]
 [ext_resource path="res://main/game/icon/triangle.tscn" type="PackedScene" id=2]
 [ext_resource path="res://main/game/icon/nought.tscn" type="PackedScene" id=3]
 [ext_resource path="res://main/game/icon/square.tscn" type="PackedScene" id=4]
-
-[sub_resource type="Shader" id=3]
-code = "shader_type canvas_item;
-
-
-const float WIDTH = 0.1;
-
-
-void fragment() {
-	COLOR = vec4(vec3(1.0, 0.0, 0.25), float(
-		abs(UV.x - UV.y) <= WIDTH ||
-		abs(1.0 - UV.x - UV.y) <= WIDTH
-	));
-}
-"
-
-[sub_resource type="ShaderMaterial" id=4]
-shader = SubResource( 3 )
-
-[sub_resource type="Shader" id=5]
-code = "shader_type canvas_item;
-
-
-const float WIDTH = 0.125;
-
-
-void fragment() {
-	COLOR = vec4(vec3(0.0, 0.5, 1.0), float(
-		distance(UV, vec2(0.5)) <= 0.5 &&
-		distance(UV, vec2(0.5)) >= 0.5 - WIDTH
-	));
-}
-"
-
-[sub_resource type="ShaderMaterial" id=6]
-shader = SubResource( 5 )
-
-[sub_resource type="Shader" id=1]
-code = "shader_type canvas_item;
-
-
-const float WIDTH = 0.125;
-
-
-void fragment() {
-	COLOR = vec4(vec3(0.125, 1.0, 0.0), float(
-		abs(1.0 - UV.y) <= WIDTH ||
-		abs((UV.x * 2.0 - 1.0) - UV.y) <= WIDTH ||
-		abs(1.0 - (UV.x * 2.0) - UV.y) <= WIDTH
-	));
-}
-"
-
-[sub_resource type="ShaderMaterial" id=2]
-shader = SubResource( 1 )
-
-[sub_resource type="Shader" id=7]
-code = "shader_type canvas_item;
-
-
-const float WIDTH = 0.125;
-
-
-void fragment() {
-	COLOR = vec4(vec3(1.0, 0.375, 0.0), float(
-		abs(1.0 - UV.y) <= WIDTH ||
-		abs(1.0 - UV.x) <= WIDTH ||
-		abs(UV.x) <= WIDTH ||
-		abs(UV.y) <= WIDTH
-	));
-}
-"
-
-[sub_resource type="ShaderMaterial" id=8]
-shader = SubResource( 7 )
+[ext_resource path="res://assets/shader/cross.tres" type="Material" id=5]
+[ext_resource path="res://assets/shader/square.tres" type="Material" id=6]
+[ext_resource path="res://assets/shader/triangle.tres" type="Material" id=7]
+[ext_resource path="res://assets/shader/nought.tres" type="Material" id=8]
 
 [node name="icon_container" type="MarginContainer"]
 anchor_right = 1.0
@@ -90,28 +19,28 @@ custom_constants/margin_left = 0
 custom_constants/margin_bottom = 0
 
 [node name="cross" parent="." instance=ExtResource( 1 )]
-material = SubResource( 4 )
+material = ExtResource( 5 )
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_right = 2048.0
 margin_bottom = 1200.0
 
 [node name="nought" parent="." instance=ExtResource( 3 )]
-material = SubResource( 6 )
+material = ExtResource( 8 )
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_right = 2048.0
 margin_bottom = 1200.0
 
 [node name="triangle" parent="." instance=ExtResource( 2 )]
-material = SubResource( 2 )
+material = ExtResource( 7 )
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_right = 2048.0
 margin_bottom = 1200.0
 
 [node name="square" parent="." instance=ExtResource( 4 )]
-material = SubResource( 8 )
+material = ExtResource( 6 )
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_right = 2048.0

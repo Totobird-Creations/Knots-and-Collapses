@@ -1,0 +1,19 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=2]
+
+[sub_resource type="Shader" id=5]
+code = "shader_type canvas_item;
+
+
+const float WIDTH = 0.125;
+
+
+void fragment() {
+	COLOR = vec4(vec3(0.0, 0.5, 1.0), float(
+		distance(UV, vec2(0.5)) <= 0.5 &&
+		distance(UV, vec2(0.5)) >= 0.5 - WIDTH
+	));
+}
+"
+
+[resource]
+shader = SubResource( 5 )

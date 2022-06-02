@@ -1,7 +1,13 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=22 format=2]
 
 [ext_resource path="res://main/game/board.tscn" type="PackedScene" id=1]
 [ext_resource path="res://main/game/game.gd" type="Script" id=2]
+[ext_resource path="res://main/game/icon_container.tscn" type="PackedScene" id=3]
+[ext_resource path="res://assets/font/regular.ttf" type="DynamicFontData" id=4]
+[ext_resource path="res://assets/shader/cross.tres" type="Material" id=5]
+[ext_resource path="res://assets/shader/square.tres" type="Material" id=6]
+[ext_resource path="res://assets/shader/triangle.tres" type="Material" id=7]
+[ext_resource path="res://assets/shader/nought.tres" type="Material" id=8]
 
 [sub_resource type="StyleBoxFlat" id=2]
 bg_color = Color( 1, 1, 1, 0 )
@@ -10,6 +16,109 @@ border_width_top = 4
 border_width_right = 4
 border_width_bottom = 4
 border_color = Color( 0.498039, 0.498039, 0.498039, 1 )
+
+[sub_resource type="DynamicFont" id=3]
+size = 48
+font_data = ExtResource( 4 )
+
+[sub_resource type="DynamicFont" id=12]
+size = 88
+extra_spacing_bottom = -12
+font_data = ExtResource( 4 )
+
+[sub_resource type="DynamicFont" id=4]
+size = 48
+extra_spacing_top = 8
+extra_spacing_bottom = 8
+font_data = ExtResource( 4 )
+
+[sub_resource type="StyleBoxFlat" id=6]
+bg_color = Color( 1, 1, 1, 0.121569 )
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color( 1.25, 1.25, 1.25, 1 )
+
+[sub_resource type="StyleBoxFlat" id=5]
+bg_color = Color( 1, 1, 1, 0 )
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color( 1.25, 1.25, 1.25, 1 )
+
+[sub_resource type="StyleBoxEmpty" id=7]
+
+[sub_resource type="StyleBoxFlat" id=8]
+bg_color = Color( 0, 0, 0, 0.74902 )
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color( 1.25, 1.25, 1.25, 1 )
+
+[sub_resource type="DynamicFont" id=11]
+size = 64
+font_data = ExtResource( 4 )
+
+[sub_resource type="StyleBoxEmpty" id=13]
+
+[sub_resource type="Animation" id=10]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ false ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ) ]
+}
+
+[sub_resource type="Animation" id=9]
+resource_name = "main"
+length = 0.25
+step = 0.01
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.02 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ false, true ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.02, 0.25 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
+}
 
 [sub_resource type="Environment" id=1]
 background_mode = 4
@@ -40,14 +149,14 @@ margin_bottom = -64.0
 mouse_filter = 2
 
 [node name="board_container" type="AspectRatioContainer" parent="horizontal"]
-margin_right = 1920.0
+margin_right = 1404.0
 margin_bottom = 1072.0
 mouse_filter = 2
 size_flags_horizontal = 3
 
 [node name="board_margin" type="MarginContainer" parent="horizontal/board_container"]
-margin_left = 424.0
-margin_right = 1496.0
+margin_left = 166.0
+margin_right = 1238.0
 margin_bottom = 1072.0
 mouse_filter = 2
 
@@ -62,7 +171,6 @@ margin_bottom = 1072.0
 mouse_filter = 2
 
 [node name="menu" type="Panel" parent="horizontal"]
-visible = false
 margin_left = 1408.0
 margin_right = 1920.0
 margin_bottom = 1072.0
@@ -77,5 +185,311 @@ margin_top = 32.0
 margin_right = -32.0
 margin_bottom = -32.0
 
+[node name="turn" parent="horizontal/menu/vertical" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 448.0
+margin_bottom = 384.0
+rect_min_size = Vector2( 448, 384 )
+custom_constants/margin_right = 64
+custom_constants/margin_top = 64
+custom_constants/margin_left = 64
+
+[node name="turn_title" type="Label" parent="horizontal/menu/vertical"]
+margin_top = 388.0
+margin_right = 448.0
+margin_bottom = 434.0
+custom_colors/font_color = Color( 1.25, 1.25, 1.25, 1 )
+custom_fonts/font = SubResource( 3 )
+text = "Current Turn"
+align = 1
+
+[node name="players" type="HBoxContainer" parent="horizontal/menu/vertical"]
+modulate = Color( 1.25, 1.25, 1.25, 1 )
+margin_top = 438.0
+margin_right = 448.0
+margin_bottom = 502.0
+rect_min_size = Vector2( 0, 64 )
+custom_constants/separation = 16
+alignment = 1
+
+[node name="cross" type="AspectRatioContainer" parent="horizontal/menu/vertical/players"]
+margin_left = 72.0
+margin_right = 136.0
+margin_bottom = 64.0
+rect_min_size = Vector2( 64, 64 )
+
+[node name="texture" type="ColorRect" parent="horizontal/menu/vertical/players/cross"]
+material = ExtResource( 5 )
+margin_right = 64.0
+margin_bottom = 64.0
+
+[node name="nought" type="AspectRatioContainer" parent="horizontal/menu/vertical/players"]
+margin_left = 152.0
+margin_right = 216.0
+margin_bottom = 64.0
+rect_min_size = Vector2( 64, 64 )
+
+[node name="texture" type="ColorRect" parent="horizontal/menu/vertical/players/nought"]
+material = ExtResource( 8 )
+margin_right = 64.0
+margin_bottom = 64.0
+
+[node name="triangle" type="AspectRatioContainer" parent="horizontal/menu/vertical/players"]
+margin_left = 232.0
+margin_right = 296.0
+margin_bottom = 64.0
+rect_min_size = Vector2( 64, 64 )
+
+[node name="texture" type="ColorRect" parent="horizontal/menu/vertical/players/triangle"]
+material = ExtResource( 7 )
+margin_right = 64.0
+margin_bottom = 64.0
+
+[node name="square" type="AspectRatioContainer" parent="horizontal/menu/vertical/players"]
+margin_left = 312.0
+margin_right = 376.0
+margin_bottom = 64.0
+rect_min_size = Vector2( 64, 64 )
+
+[node name="texture" type="ColorRect" parent="horizontal/menu/vertical/players/square"]
+material = ExtResource( 6 )
+margin_right = 64.0
+margin_bottom = 64.0
+
+[node name="spacer_a" type="Control" parent="horizontal/menu/vertical"]
+margin_top = 506.0
+margin_right = 448.0
+margin_bottom = 570.0
+rect_min_size = Vector2( 0, 64 )
+
+[node name="timer" type="Label" parent="horizontal/menu/vertical"]
+margin_top = 574.0
+margin_right = 448.0
+margin_bottom = 643.0
+custom_colors/font_color = Color( 1.5, 1.5, 1.5, 1 )
+custom_fonts/font = SubResource( 12 )
+text = "00:00:00"
+align = 1
+
+[node name="timer_title" type="Label" parent="horizontal/menu/vertical"]
+margin_top = 647.0
+margin_right = 448.0
+margin_bottom = 693.0
+custom_colors/font_color = Color( 1.25, 1.25, 1.25, 1 )
+custom_fonts/font = SubResource( 3 )
+text = "Time Elapsed"
+align = 1
+
+[node name="spacer_b" type="Control" parent="horizontal/menu/vertical"]
+margin_top = 697.0
+margin_right = 448.0
+margin_bottom = 934.0
+size_flags_vertical = 3
+
+[node name="new_game" type="Button" parent="horizontal/menu/vertical"]
+margin_top = 938.0
+margin_right = 448.0
+margin_bottom = 1008.0
+custom_colors/font_color_focus = Color( 1.25, 1.25, 1.25, 1 )
+custom_colors/font_color = Color( 1.25, 1.25, 1.25, 1 )
+custom_colors/font_color_hover = Color( 1.25, 1.25, 1.25, 1 )
+custom_colors/font_color_pressed = Color( 1.25, 1.25, 1.25, 1 )
+custom_fonts/font = SubResource( 4 )
+custom_styles/hover = SubResource( 6 )
+custom_styles/pressed = SubResource( 5 )
+custom_styles/focus = SubResource( 7 )
+custom_styles/disabled = SubResource( 5 )
+custom_styles/normal = SubResource( 5 )
+text = "New Game"
+
+[node name="panel" type="Control" parent="."]
+visible = false
+modulate = Color( 1, 1, 1, 0 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="fade" type="ColorRect" parent="panel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0, 0, 0, 0.74902 )
+
+[node name="panel" type="Panel" parent="panel"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -640.0
+margin_top = -384.0
+margin_right = 640.0
+margin_bottom = 384.0
+custom_styles/panel = SubResource( 8 )
+
+[node name="vertical" type="VBoxContainer" parent="panel/panel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 64.0
+margin_top = 64.0
+margin_right = -64.0
+margin_bottom = -64.0
+
+[node name="title" type="Label" parent="panel/panel/vertical"]
+margin_right = 1152.0
+margin_bottom = 60.0
+custom_colors/font_color = Color( 1.25, 1.25, 1.25, 1 )
+custom_fonts/font = SubResource( 11 )
+text = "New Game"
+align = 1
+
+[node name="spacer_a" type="Control" parent="panel/panel/vertical"]
+margin_top = 64.0
+margin_right = 1152.0
+margin_bottom = 253.0
+size_flags_vertical = 3
+
+[node name="players" type="HBoxContainer" parent="panel/panel/vertical"]
+modulate = Color( 1.5, 1.5, 1.5, 1 )
+margin_top = 257.0
+margin_right = 1152.0
+margin_bottom = 353.0
+rect_min_size = Vector2( 0, 64 )
+custom_constants/separation = 16
+alignment = 1
+
+[node name="cross" type="AspectRatioContainer" parent="panel/panel/vertical/players"]
+margin_left = 360.0
+margin_right = 456.0
+margin_bottom = 96.0
+rect_min_size = Vector2( 96, 96 )
+
+[node name="texture" type="ColorRect" parent="panel/panel/vertical/players/cross"]
+material = ExtResource( 5 )
+margin_right = 96.0
+margin_bottom = 96.0
+
+[node name="nought" type="AspectRatioContainer" parent="panel/panel/vertical/players"]
+margin_left = 472.0
+margin_right = 568.0
+margin_bottom = 96.0
+rect_min_size = Vector2( 96, 96 )
+
+[node name="texture" type="ColorRect" parent="panel/panel/vertical/players/nought"]
+material = ExtResource( 8 )
+margin_right = 96.0
+margin_bottom = 96.0
+
+[node name="button" type="Button" parent="panel/panel/vertical/players/nought"]
+margin_right = 96.0
+margin_bottom = 96.0
+custom_styles/hover = SubResource( 13 )
+custom_styles/pressed = SubResource( 13 )
+custom_styles/focus = SubResource( 13 )
+custom_styles/disabled = SubResource( 13 )
+custom_styles/normal = SubResource( 13 )
+
+[node name="triangle" type="AspectRatioContainer" parent="panel/panel/vertical/players"]
+modulate = Color( 1, 1, 1, 0.247059 )
+margin_left = 584.0
+margin_right = 680.0
+margin_bottom = 96.0
+rect_min_size = Vector2( 96, 96 )
+
+[node name="texture" type="ColorRect" parent="panel/panel/vertical/players/triangle"]
+material = ExtResource( 7 )
+margin_right = 96.0
+margin_bottom = 96.0
+
+[node name="button" type="Button" parent="panel/panel/vertical/players/triangle"]
+margin_right = 96.0
+margin_bottom = 96.0
+custom_styles/hover = SubResource( 13 )
+custom_styles/pressed = SubResource( 13 )
+custom_styles/focus = SubResource( 13 )
+custom_styles/disabled = SubResource( 13 )
+custom_styles/normal = SubResource( 13 )
+
+[node name="square" type="AspectRatioContainer" parent="panel/panel/vertical/players"]
+modulate = Color( 1, 1, 1, 0.247059 )
+margin_left = 696.0
+margin_right = 792.0
+margin_bottom = 96.0
+rect_min_size = Vector2( 96, 96 )
+
+[node name="texture" type="ColorRect" parent="panel/panel/vertical/players/square"]
+material = ExtResource( 6 )
+margin_right = 96.0
+margin_bottom = 96.0
+
+[node name="button" type="Button" parent="panel/panel/vertical/players/square"]
+margin_right = 96.0
+margin_bottom = 96.0
+custom_styles/hover = SubResource( 13 )
+custom_styles/pressed = SubResource( 13 )
+custom_styles/focus = SubResource( 13 )
+custom_styles/disabled = SubResource( 13 )
+custom_styles/normal = SubResource( 13 )
+
+[node name="spacer_b" type="Control" parent="panel/panel/vertical"]
+margin_top = 357.0
+margin_right = 1152.0
+margin_bottom = 373.0
+rect_min_size = Vector2( 0, 16 )
+
+[node name="spacer_c" type="Control" parent="panel/panel/vertical"]
+margin_top = 377.0
+margin_right = 1152.0
+margin_bottom = 566.0
+size_flags_vertical = 3
+
+[node name="horizontal" type="HBoxContainer" parent="panel/panel/vertical"]
+margin_top = 570.0
+margin_right = 1152.0
+margin_bottom = 640.0
+custom_constants/separation = 64
+
+[node name="cancel" type="Button" parent="panel/panel/vertical/horizontal"]
+visible = false
+margin_right = 544.0
+margin_bottom = 70.0
+size_flags_horizontal = 3
+custom_colors/font_color_focus = Color( 1.25, 1.25, 1.25, 1 )
+custom_colors/font_color = Color( 1.25, 1.25, 1.25, 1 )
+custom_colors/font_color_hover = Color( 1.25, 1.25, 1.25, 1 )
+custom_colors/font_color_pressed = Color( 1.25, 1.25, 1.25, 1 )
+custom_fonts/font = SubResource( 4 )
+custom_styles/hover = SubResource( 6 )
+custom_styles/pressed = SubResource( 5 )
+custom_styles/focus = SubResource( 7 )
+custom_styles/disabled = SubResource( 5 )
+custom_styles/normal = SubResource( 5 )
+text = "Cancel"
+
+[node name="confirm" type="Button" parent="panel/panel/vertical/horizontal"]
+margin_right = 1152.0
+margin_bottom = 70.0
+size_flags_horizontal = 3
+custom_colors/font_color_focus = Color( 1.25, 1.25, 1.25, 1 )
+custom_colors/font_color = Color( 1.25, 1.25, 1.25, 1 )
+custom_colors/font_color_hover = Color( 1.25, 1.25, 1.25, 1 )
+custom_colors/font_color_pressed = Color( 1.25, 1.25, 1.25, 1 )
+custom_fonts/font = SubResource( 4 )
+custom_styles/hover = SubResource( 6 )
+custom_styles/pressed = SubResource( 5 )
+custom_styles/focus = SubResource( 7 )
+custom_styles/disabled = SubResource( 5 )
+custom_styles/normal = SubResource( 5 )
+text = "Confirm"
+
+[node name="animation" type="AnimationPlayer" parent="panel"]
+anims/RESET = SubResource( 10 )
+anims/main = SubResource( 9 )
+
 [node name="environment" type="WorldEnvironment" parent="."]
 environment = SubResource( 1 )
+
+[connection signal="pressed" from="horizontal/menu/vertical/new_game" to="." method="show_reset" binds= [ true ]]
+[connection signal="pressed" from="panel/panel/vertical/players/nought/button" to="." method="set_player_count" binds= [ 2 ]]
+[connection signal="pressed" from="panel/panel/vertical/players/triangle/button" to="." method="set_player_count" binds= [ 3 ]]
+[connection signal="pressed" from="panel/panel/vertical/players/square/button" to="." method="set_player_count" binds= [ 4 ]]
+[connection signal="pressed" from="panel/panel/vertical/horizontal/cancel" to="." method="cancel_reset"]
+[connection signal="pressed" from="panel/panel/vertical/horizontal/confirm" to="." method="confirm_reset"]

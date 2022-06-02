@@ -10,7 +10,7 @@ var hovered : bool = false
 func update_slot(new_game : Node) -> void:
 	game = new_game
 
-	disabled = side != -1 || get_parent().get_parent().side != -1 #|| game.allowed_boards[get_small_board_position()] <= 0
+	disabled = side != -1 || get_parent().get_parent().side != -1 || game.allowed_boards[get_small_board_position()] <= 0
 
 
 func set_side(value : int) -> void:

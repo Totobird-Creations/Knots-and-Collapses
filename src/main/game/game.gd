@@ -9,6 +9,12 @@ const COLOURS     : Array       = [
 	Color(0.125, 1.0, 0.0),
 	Color(1.0, 0.375, 0.0)
 ]
+const NAMES       : Array       = [
+	"Cross",
+	"Nought",
+	"Triangle",
+	"Square"
+]
 const BOARD_NONE  : Dictionary  = {0 : 0, 1 : 0, 2 : 0, 3 : 0, 4 : 0, 5 : 0, 6 : 0, 7 : 0, 8 : 0}
 const BOARD_RESET : Dictionary  = {0 : 1, 1 : 1, 2 : 1, 3 : 1, 4 : 0, 5 : 1, 6 : 1, 7 : 1, 8 : 1}
 const BOARD_ALL   : Dictionary  = {0 : 2, 1 : 2, 2 : 2, 3 : 2, 4 : 2, 5 : 2, 6 : 2, 7 : 2, 8 : 2}
@@ -75,30 +81,35 @@ func _input(event : InputEvent) -> void:
 
 
 
-func show_reset(show_cancel : bool = true) -> void:
+func show_reset(show_cancel : bool = true, fade_animation : bool = true) -> void:
 	set_player_count(2)
 	playing              = false
-	$panel/panel/vertical/horizontal/cancel.visible = show_cancel
-	$panel/animation.play("main")
+	$panel/new_game/vertical/horizontal/cancel.visible = show_cancel
+	$panel/new_game/animation.play("main")
+	if (fade_animation):
+		$panel/fade/animation.play("main")
 
 
 func set_player_count(value : int) -> void:
 	pending_player_count = value
-	for i in range($panel/panel/vertical/players.get_child_count()):
-		$panel/panel/vertical/players.get_child(i).modulate.a = float(i < pending_player_count) * 0.75 + 0.25
+	for i in range($panel/new_game/vertical/players.get_child_count()):
+		$panel/new_game/vertical/players.get_child(i).modulate.a = float(i < pending_player_count) * 0.75 + 0.25
 
 
 func cancel_reset() -> void:
 	playing = true
-	$panel/animation.play_backwards("main")
+	$panel/new_game/animation.play_backwards("main")
+	$panel/fade/animation.play_backwards("main")
 
 
 func confirm_reset() -> void:
 	set_turn(0)
+	$panel/new_game/animation.play_backwards("main")
+	$panel/fade/animation.play_backwards("main")
+
+	player_count = pending_player_count
 	for i in range($horizontal/menu/vertical/players.get_child_count()):
 		$horizontal/menu/vertical/players.get_child(i).visible = i < player_count
-	$panel/animation.play_backwards("main")
-	player_count = pending_player_count
 	set_turn(0)
 	playing = true
 	time    = 0.0
@@ -114,7 +125,6 @@ func confirm_reset() -> void:
 		small_board.set_side(-1)
 		for slot in small_board.get_node("grid").get_children():
 			slot.set_side(-1)
-	update_wins()
 	update_small_boards()
 	update_slots()
 
@@ -182,16 +192,16 @@ func loop_found(links : Array, source : Node, passed : Array = []) -> bool:
 	return false
 
 
-func collapse(links : Array, source : Node, side : int, skip : Array = []) -> Array:
+func collapse(links : Array, source : Node, side : int, skip : Array = [], method : String = "set_side") -> Array:
 	if (source in skip):
 		return []
 	var res := [source]
-	source.set_side(side)
+	source.call(method, side)
 	for link in links:
 		if (link[0] == source):
-			res += collapse(links, link[1], link[2], skip + [source])
+			res += collapse(links, link[1], link[2], skip + [source], method)
 		if (link[1] == source):
-			res += collapse(links, link[0], link[2], skip + [source])
+			res += collapse(links, link[0], link[2], skip + [source], method)
 	return res
 
 
@@ -212,10 +222,16 @@ func update_wins() -> void:
 		if (won_boards.get(i, -1) == -1):
 			won_boards[i] = board.calculate_winner()
 			board.set_side(won_boards[i])
+	var winner := calculate_winner()
+	if (len(winner) > 0):
+		for i in range($panel/winner/vertical/player/icon.get_child_count()):
+			$panel/winner/vertical/player/icon.get_child(i).visible = len(winner) == 1 && i == winner[0]
+		$panel/winner/animation.play("main")
+		$panel/fade/animation.play("main")
 
 
 
-func calculate_winner() -> int:
+func calculate_winner() -> Array:
 	var found : Dictionary = {}
 	var board := generate_2d_board()
 	for i in range(3):
@@ -245,9 +261,7 @@ func calculate_winner() -> int:
 		found[trbl[0]] += 1
 	# Return found winner
 	found.erase(-1)
-	if (len(found.keys()) == 1):
-		return found.keys()[0]
-	return -1
+	return found.keys()
 
 
 func generate_2d_board() -> Array:

@@ -10,7 +10,7 @@ const COLOURS     : Array       = [
 	Color(1.0, 0.375, 0.0)
 ]
 const BOARD_NONE  : Dictionary  = {0 : 0, 1 : 0, 2 : 0, 3 : 0, 4 : 0, 5 : 0, 6 : 0, 7 : 0, 8 : 0}
-const BOARD_RESET : Dictionary  = {0 : 1, 1 : 1, 2 : 1, 3 : 1, 4 : 1, 5 : 1, 6 : 1, 7 : 1, 8 : 1}
+const BOARD_RESET : Dictionary  = {0 : 1, 1 : 1, 2 : 1, 3 : 1, 4 : 0, 5 : 1, 6 : 1, 7 : 1, 8 : 1}
 const BOARD_ALL   : Dictionary  = {0 : 1, 1 : 1, 2 : 1, 3 : 1, 4 : 1, 5 : 1, 6 : 1, 7 : 1, 8 : 1}
 
 export(int, "Cross", "Nought", "Triangle") var turn := 0 setget set_turn
@@ -27,6 +27,10 @@ var won_boards              : Dictionary = {}
 func set_turn(value : int) -> void:
 	turn = value % 2
 	update_slots()
+
+func update_small_boards() -> void:
+	for small_board in $horizontal/board_container/board_margin/board.get_children():
+		small_board.update_small_board(self)
 
 func update_slots() -> void:
 	for small_board in $horizontal/board_container/board_margin/board.get_children():
@@ -77,6 +81,7 @@ func link_slot(next_slot : Node) -> void:
 		else:
 			links.append(source)
 		set_turn(turn + 1)
+		update_small_boards()
 	else:
 		pending_link_slot = next_slot
 		allowed_boards[next_slot.get_small_board_position()] -= 1
@@ -87,7 +92,7 @@ func link_slot(next_slot : Node) -> void:
 
 func validate_allowed_boards(boards : Dictionary) -> Dictionary:
 	for i in boards.keys():
-		if (boards[i] > 0 && $horizontal/board_container/board_margin/board.get_child(i).is_board_open()):
+		if (boards[i] > 0 && $horizontal/board_container/board_margin/board.get_child(i).is_board_open(true)):
 			return boards
 	return(BOARD_ALL.duplicate())
 

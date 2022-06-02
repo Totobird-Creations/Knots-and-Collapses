@@ -1,16 +1,13 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://main/game/slot.tscn" type="PackedScene" id=1]
-[ext_resource path="res://main/game/icon/cross.tscn" type="PackedScene" id=2]
-[ext_resource path="res://main/game/icon/nought.tscn" type="PackedScene" id=3]
-[ext_resource path="res://main/game/icon/triangle.tscn" type="PackedScene" id=4]
+[ext_resource path="res://main/game/icon_container.tscn" type="PackedScene" id=2]
 [ext_resource path="res://main/game/small_board.gd" type="Script" id=5]
-[ext_resource path="res://main/game/icon/square.tscn" type="PackedScene" id=6]
 
 [sub_resource type="Animation" id=1]
 length = 0.001
 tracks/0/type = "value"
-tracks/0/path = NodePath("winner:modulate")
+tracks/0/path = NodePath("grid:modulate")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -19,10 +16,10 @@ tracks/0/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ Color( 1, 1, 1, 0 ) ]
+"values": [ Color( 1, 1, 1, 1 ) ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("grid:modulate")
+tracks/1/path = NodePath("winner:modulate")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
@@ -31,7 +28,7 @@ tracks/1/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ Color( 1, 1, 1, 1 ) ]
+"values": [ Color( 1, 1, 1, 0 ) ]
 }
 
 [sub_resource type="Animation" id=2]
@@ -39,7 +36,7 @@ resource_name = "main"
 length = 0.25
 step = 0.05
 tracks/0/type = "value"
-tracks/0/path = NodePath("winner:modulate")
+tracks/0/path = NodePath("grid:modulate")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -48,10 +45,10 @@ tracks/0/keys = {
 "times": PoolRealArray( 0, 0.25 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 0,
-"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
+"values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0.247059 ) ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("grid:modulate")
+tracks/1/path = NodePath("winner:modulate")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
@@ -60,7 +57,7 @@ tracks/1/keys = {
 "times": PoolRealArray( 0, 0.25 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 0,
-"values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0.247059 ) ]
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
 }
 
 [node name="small_board" type="MarginContainer"]
@@ -127,47 +124,12 @@ margin_top = 144.0
 margin_right = 208.0
 margin_bottom = 208.0
 
-[node name="winner" type="MarginContainer" parent="."]
+[node name="winner" parent="." instance=ExtResource( 2 )]
 modulate = Color( 1, 1, 1, 0 )
+anchor_right = 0.0
+anchor_bottom = 0.0
 margin_right = 208.0
 margin_bottom = 208.0
-mouse_filter = 2
-custom_constants/margin_right = 16
-custom_constants/margin_top = 16
-custom_constants/margin_left = 16
-custom_constants/margin_bottom = 16
-
-[node name="cross" parent="winner" instance=ExtResource( 2 )]
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 16.0
-margin_top = 16.0
-margin_right = 192.0
-margin_bottom = 192.0
-
-[node name="nought" parent="winner" instance=ExtResource( 3 )]
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 16.0
-margin_top = 16.0
-margin_right = 192.0
-margin_bottom = 192.0
-
-[node name="triangle" parent="winner" instance=ExtResource( 4 )]
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 16.0
-margin_top = 16.0
-margin_right = 192.0
-margin_bottom = 192.0
-
-[node name="square" parent="winner" instance=ExtResource( 6 )]
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 16.0
-margin_top = 16.0
-margin_right = 192.0
-margin_bottom = 192.0
 
 [node name="animation" type="AnimationPlayer" parent="."]
 anims/RESET = SubResource( 1 )

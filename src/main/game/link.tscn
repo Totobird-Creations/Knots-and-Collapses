@@ -1,10 +1,7 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://main/game/link.gd" type="Script" id=1]
-[ext_resource path="res://main/game/icon/nought.tscn" type="PackedScene" id=2]
-[ext_resource path="res://main/game/icon/cross.tscn" type="PackedScene" id=3]
-[ext_resource path="res://main/game/icon/triangle.tscn" type="PackedScene" id=4]
-[ext_resource path="res://main/game/icon/square.tscn" type="PackedScene" id=5]
+[ext_resource path="res://main/game/icon_container.tscn" type="PackedScene" id=6]
 
 [node name="link" type="Line2D"]
 width = 2.0
@@ -13,34 +10,16 @@ script = ExtResource( 1 )
 
 [node name="0" type="Node2D" parent="."]
 
-[node name="bounds" type="Control" parent="0"]
-margin_left = -12.0
-margin_top = -12.0
-margin_right = 12.0
-margin_bottom = 12.0
-mouse_filter = 2
-
-[node name="cross" parent="0/bounds" instance=ExtResource( 3 )]
-
-[node name="nought" parent="0/bounds" instance=ExtResource( 2 )]
-
-[node name="triangle" parent="0/bounds" instance=ExtResource( 4 )]
-
-[node name="square" parent="0/bounds" instance=ExtResource( 5 )]
+[node name="bounds" parent="0" instance=ExtResource( 6 )]
+margin_left = -16.0
+margin_top = -16.0
+margin_right = 16.0
+margin_bottom = 16.0
 
 [node name="1" type="Node2D" parent="."]
 
-[node name="bounds" type="Control" parent="1"]
-margin_left = -12.0
-margin_top = -12.0
-margin_right = 12.0
-margin_bottom = 12.0
-mouse_filter = 2
-
-[node name="cross" parent="1/bounds" instance=ExtResource( 3 )]
-
-[node name="nought" parent="1/bounds" instance=ExtResource( 2 )]
-
-[node name="triangle" parent="1/bounds" instance=ExtResource( 4 )]
-
-[node name="square" parent="1/bounds" instance=ExtResource( 5 )]
+[node name="bounds" parent="1" instance=ExtResource( 6 )]
+margin_left = -16.0
+margin_top = -16.0
+margin_right = 16.0
+margin_bottom = 16.0

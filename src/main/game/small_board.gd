@@ -1,13 +1,17 @@
 extends MarginContainer
 
 
-var game : Node
+var game     : Node
 
-var side : int = -1
+var side     : int  = -1
+var disabled : bool = false
 
 
 func update_small_board(new_game : Node) -> void:
 	game = new_game
+	if (! disabled && ! is_board_open(false)):
+		$animation.play("main")
+		disabled = true
 
 
 func set_side(value : int) -> void:
@@ -61,8 +65,8 @@ func generate_2d_board() -> Array:
 	return board
 
 
-func is_board_open() -> bool:
-	if (! side):
+func is_board_open(include_side : bool = true) -> bool:
+	if (! (side != -1 && include_side)):
 		for slot in $grid.get_children():
 			if (slot.side == -1):
 				return true

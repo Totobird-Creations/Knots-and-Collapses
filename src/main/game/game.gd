@@ -228,6 +228,7 @@ func update_wins() -> void:
 			$panel/winner/vertical/player/icon.get_child(i).visible = len(winner) == 1 && i == winner[0]
 		$panel/winner/animation.play("main")
 		$panel/fade/animation.play("main")
+		playing = false
 
 
 

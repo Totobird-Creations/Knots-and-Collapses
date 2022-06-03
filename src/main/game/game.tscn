@@ -473,9 +473,8 @@ margin_bottom = 40.0
 [node name="icon" parent="panel/winner/vertical/player" instance=ExtResource( 3 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_top = -108.0
 margin_right = 40.0
-margin_bottom = 148.0
+margin_bottom = 256.0
 rect_min_size = Vector2( 0, 256 )
 
 [node name="spacer_b" type="Control" parent="panel/winner/vertical"]

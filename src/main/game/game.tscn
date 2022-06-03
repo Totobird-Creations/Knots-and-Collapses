@@ -470,21 +470,24 @@ align = 1
 [node name="spacer_a" type="Control" parent="panel/winner/vertical"]
 margin_top = 64.0
 margin_right = 1152.0
-margin_bottom = 183.0
+margin_bottom = 151.0
 size_flags_vertical = 3
 
 [node name="player" type="AspectRatioContainer" parent="panel/winner/vertical"]
-margin_right = 40.0
-margin_bottom = 40.0
+margin_top = 155.0
+margin_right = 1152.0
+margin_bottom = 475.0
+rect_min_size = Vector2( 0, 320 )
 
 [node name="icon" parent="panel/winner/vertical/player" instance=ExtResource( 3 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_right = 40.0
-margin_bottom = 40.0
+margin_left = 416.0
+margin_right = 736.0
+margin_bottom = 320.0
 
 [node name="spacer_b" type="Control" parent="panel/winner/vertical"]
-margin_top = 447.0
+margin_top = 479.0
 margin_right = 1152.0
 margin_bottom = 566.0
 size_flags_vertical = 3

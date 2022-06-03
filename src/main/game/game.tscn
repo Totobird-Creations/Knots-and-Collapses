@@ -796,7 +796,7 @@ environment = SubResource( 1 )
 
 [connection signal="pressed" from="horizontal/menu/vertical/new_game" to="." method="show_reset" binds= [ true ]]
 [connection signal="pressed" from="panel/winner/vertical/new_game" to="." method="show_reset" binds= [ false, false ]]
-[connection signal="pressed" from="panel/winner/vertical/new_game" to="panel/winner/animation" method="play_backwards" binds= [ "main" ]]
+[connection signal="pressed" from="panel/winner/vertical/new_game" to="panel/winner/animation" method="play" binds= [ "hide" ]]
 [connection signal="pressed" from="panel/new_game/vertical/players/cross/button" to="." method="set_player_count" binds= [ 2 ]]
 [connection signal="pressed" from="panel/new_game/vertical/players/nought/button" to="." method="set_player_count" binds= [ 2 ]]
 [connection signal="pressed" from="panel/new_game/vertical/players/triangle/button" to="." method="set_player_count" binds= [ 3 ]]

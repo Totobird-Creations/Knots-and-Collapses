@@ -232,6 +232,10 @@ func update_wins() -> void:
 	if (len(winner) > 0):
 		for i in range($panel/winner/vertical/player/icon.get_child_count()):
 			$panel/winner/vertical/player/icon.get_child(i).visible = len(winner) == 1 && i == winner[0]
+		if (len(winner) == 1):
+			$panel/winner/vertical/title.text = "Winner"
+		else:
+			$panel/winner/vertical/title.text = "Tie"
 		$panel/winner/animation.play("show")
 		$panel/fade/animation.play("show")
 		playing = false

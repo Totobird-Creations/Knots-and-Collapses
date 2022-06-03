@@ -125,7 +125,11 @@ func confirm_reset() -> void:
 		small_board.set_side(-1)
 		for slot in small_board.get_node("grid").get_children():
 			slot.set_side(-1)
+
 	update_small_boards()
+	for small_board in $horizontal/board_container/board_margin/board.get_children():
+		small_board.get_node("grid").modulate.a   = 1.0
+		small_board.get_node("winner").modulate.a = 0.0
 	update_slots()
 
 
@@ -238,7 +242,8 @@ func update_hints(next_slot : Node) -> void:
 		if (loop_found(links + [source], next_slot)):
 #warning-ignore:return_value_discarded
 			collapse(links, next_slot, turn, [], "set_hint_side")
-	clear_hints()
+	else:
+		clear_hints()
 
 
 func clear_hints() -> void:

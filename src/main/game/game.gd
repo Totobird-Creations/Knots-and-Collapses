@@ -85,9 +85,9 @@ func show_reset(show_cancel : bool = true, fade_animation : bool = true) -> void
 	set_player_count(2)
 	playing              = false
 	$panel/new_game/vertical/horizontal/cancel.visible = show_cancel
-	$panel/new_game/animation.play("main")
+	$panel/new_game/animation.play("show")
 	if (fade_animation):
-		$panel/fade/animation.play("main")
+		$panel/fade/animation.play("show")
 
 
 func set_player_count(value : int) -> void:
@@ -98,14 +98,14 @@ func set_player_count(value : int) -> void:
 
 func cancel_reset() -> void:
 	playing = true
-	$panel/new_game/animation.play_backwards("main")
-	$panel/fade/animation.play_backwards("main")
+	$panel/new_game/animation.play("hide")
+	$panel/fade/animation.play("hide")
 
 
 func confirm_reset() -> void:
 	set_turn(0)
-	$panel/new_game/animation.play_backwards("main")
-	$panel/fade/animation.play_backwards("main")
+	$panel/new_game/animation.play("hide")
+	$panel/fade/animation.play("hide")
 
 	player_count = pending_player_count
 	for i in range($horizontal/menu/vertical/players.get_child_count()):
@@ -136,24 +136,26 @@ func confirm_reset() -> void:
 
 func link_slot(next_slot : Node) -> void:
 	if (pending_link):
-		# Link was started. Solidify it and check for loops.
+		# Link was started. Solidify it.
 		pending_link.ends = [pending_link_slot, next_slot]
 		pending_link.update_link(self)
+		var source := [pending_link_slot, next_slot, pending_link.side]
 		# Prepare next player's options.
 		allowed_boards_original = BOARD_NONE.duplicate()
 		allowed_boards_original[pending_link_slot.get_index()] += 1
 		allowed_boards_original[next_slot.get_index()] += 1
-		allowed_boards_original = validate_allowed_boards(allowed_boards_original)
-		allowed_boards = allowed_boards_original.duplicate()
-		var source := [pending_link_slot, next_slot, pending_link.side]
 		pending_link = null
 		pending_link_slot = null
+		# Check for loops.
 		if (loop_found(links + [source], next_slot)):
 			# Loop found. Collapse waveform.
 			remove_links(collapse(links, next_slot, turn))
 			update_wins()
 		else:
 			links.append(source)
+		# Validate next player's options.
+		allowed_boards_original = validate_allowed_boards(allowed_boards_original)
+		allowed_boards = allowed_boards_original.duplicate()
 		set_turn(turn + 1)
 		update_small_boards()
 	else:
@@ -230,8 +232,8 @@ func update_wins() -> void:
 	if (len(winner) > 0):
 		for i in range($panel/winner/vertical/player/icon.get_child_count()):
 			$panel/winner/vertical/player/icon.get_child(i).visible = len(winner) == 1 && i == winner[0]
-		$panel/winner/animation.play("main")
-		$panel/fade/animation.play("main")
+		$panel/winner/animation.play("show")
+		$panel/fade/animation.play("show")
 		playing = false
 
 

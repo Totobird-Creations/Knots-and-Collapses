@@ -15,7 +15,6 @@ func update_small_board(new_game : Node) -> void:
 
 
 func set_side(value : int) -> void:
-	var prev_side := side
 	side = value
 	if (side != -1):
 		$animation.play("main")
@@ -53,6 +52,7 @@ func calculate_winner() -> int:
 			found[trbl[0]] = 0
 		found[trbl[0]] += 1
 	# Return found winner
+#warning-ignore:return_value_discarded
 	found.erase(-1)
 	if (len(found.keys()) == 1):
 		return found.keys()[0]

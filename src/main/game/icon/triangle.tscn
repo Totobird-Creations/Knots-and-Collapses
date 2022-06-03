@@ -8,11 +8,19 @@ const float WIDTH = 0.125;
 
 
 void fragment() {
-	COLOR = vec4(vec3(0.125, 1.0, 0.0), float(
-		abs(1.0 - UV.y) <= WIDTH ||
-		abs((UV.x * 2.0 - 1.0) - UV.y) <= WIDTH ||
-		abs(1.0 - (UV.x * 2.0) - UV.y) <= WIDTH
-	));
+	COLOR.a = float(
+		1.0 - UV.y < UV.x * 2.0 &&
+		UV.x - 0.5 < UV.y / 2.0
+	);
+	if (
+		UV.x - WIDTH > (1.0 - UV.y) / 2.0 &&
+		UV.x + WIDTH < UV.y / 2.0 + 0.5 &&
+		UV.y < 1.0 - WIDTH
+	) {
+		COLOR.rgb = vec3(0.0);
+	} else {
+		COLOR.rgb = vec3(0.125, 1.0, 0.0);
+	}
 }
 "
 
@@ -20,7 +28,6 @@ void fragment() {
 shader = SubResource( 1 )
 
 [node name="triangle" type="ColorRect"]
-visible = false
 modulate = Color( 2, 2, 2, 1 )
 material = SubResource( 2 )
 anchor_right = 1.0

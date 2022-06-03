@@ -4,10 +4,10 @@
 [ext_resource path="res://main/game/game.gd" type="Script" id=2]
 [ext_resource path="res://main/game/icon_container.tscn" type="PackedScene" id=3]
 [ext_resource path="res://assets/font/regular.ttf" type="DynamicFontData" id=4]
-[ext_resource path="res://assets/shader/cross.tres" type="Material" id=5]
-[ext_resource path="res://assets/shader/square.tres" type="Material" id=6]
-[ext_resource path="res://assets/shader/triangle.tres" type="Material" id=7]
-[ext_resource path="res://assets/shader/nought.tres" type="Material" id=8]
+[ext_resource path="res://main/game/icon/cross.tscn" type="PackedScene" id=9]
+[ext_resource path="res://main/game/icon/triangle.tscn" type="PackedScene" id=10]
+[ext_resource path="res://main/game/icon/nought.tscn" type="PackedScene" id=11]
+[ext_resource path="res://main/game/icon/square.tscn" type="PackedScene" id=12]
 
 [sub_resource type="StyleBoxFlat" id=2]
 bg_color = Color( 1, 1, 1, 0 )
@@ -331,8 +331,10 @@ margin_right = 136.0
 margin_bottom = 64.0
 rect_min_size = Vector2( 64, 64 )
 
-[node name="texture" type="ColorRect" parent="horizontal/menu/vertical/players/cross"]
-material = ExtResource( 5 )
+[node name="cross" parent="horizontal/menu/vertical/players/cross" instance=ExtResource( 9 )]
+visible = true
+anchor_right = 0.0
+anchor_bottom = 0.0
 margin_right = 64.0
 margin_bottom = 64.0
 
@@ -342,8 +344,10 @@ margin_right = 216.0
 margin_bottom = 64.0
 rect_min_size = Vector2( 64, 64 )
 
-[node name="texture" type="ColorRect" parent="horizontal/menu/vertical/players/nought"]
-material = ExtResource( 8 )
+[node name="nought" parent="horizontal/menu/vertical/players/nought" instance=ExtResource( 11 )]
+visible = true
+anchor_right = 0.0
+anchor_bottom = 0.0
 margin_right = 64.0
 margin_bottom = 64.0
 
@@ -353,8 +357,9 @@ margin_right = 296.0
 margin_bottom = 64.0
 rect_min_size = Vector2( 64, 64 )
 
-[node name="texture" type="ColorRect" parent="horizontal/menu/vertical/players/triangle"]
-material = ExtResource( 7 )
+[node name="triangle" parent="horizontal/menu/vertical/players/triangle" instance=ExtResource( 10 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
 margin_right = 64.0
 margin_bottom = 64.0
 
@@ -364,8 +369,10 @@ margin_right = 376.0
 margin_bottom = 64.0
 rect_min_size = Vector2( 64, 64 )
 
-[node name="texture" type="ColorRect" parent="horizontal/menu/vertical/players/square"]
-material = ExtResource( 6 )
+[node name="square" parent="horizontal/menu/vertical/players/square" instance=ExtResource( 12 )]
+visible = true
+anchor_right = 0.0
+anchor_bottom = 0.0
 margin_right = 64.0
 margin_bottom = 64.0
 
@@ -474,8 +481,7 @@ margin_bottom = 40.0
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_right = 40.0
-margin_bottom = 256.0
-rect_min_size = Vector2( 0, 256 )
+margin_bottom = 40.0
 
 [node name="spacer_b" type="Control" parent="panel/winner/vertical"]
 margin_top = 447.0
@@ -555,8 +561,10 @@ margin_right = 456.0
 margin_bottom = 96.0
 rect_min_size = Vector2( 96, 96 )
 
-[node name="texture" type="ColorRect" parent="panel/new_game/vertical/players/cross"]
-material = ExtResource( 5 )
+[node name="cross" parent="panel/new_game/vertical/players/cross" instance=ExtResource( 9 )]
+visible = true
+anchor_right = 0.0
+anchor_bottom = 0.0
 margin_right = 96.0
 margin_bottom = 96.0
 
@@ -575,8 +583,10 @@ margin_right = 568.0
 margin_bottom = 96.0
 rect_min_size = Vector2( 96, 96 )
 
-[node name="texture" type="ColorRect" parent="panel/new_game/vertical/players/nought"]
-material = ExtResource( 8 )
+[node name="nought" parent="panel/new_game/vertical/players/nought" instance=ExtResource( 11 )]
+visible = true
+anchor_right = 0.0
+anchor_bottom = 0.0
 margin_right = 96.0
 margin_bottom = 96.0
 
@@ -596,8 +606,9 @@ margin_right = 680.0
 margin_bottom = 96.0
 rect_min_size = Vector2( 96, 96 )
 
-[node name="texture" type="ColorRect" parent="panel/new_game/vertical/players/triangle"]
-material = ExtResource( 7 )
+[node name="triangle" parent="panel/new_game/vertical/players/triangle" instance=ExtResource( 10 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
 margin_right = 96.0
 margin_bottom = 96.0
 
@@ -617,8 +628,10 @@ margin_right = 792.0
 margin_bottom = 96.0
 rect_min_size = Vector2( 96, 96 )
 
-[node name="texture" type="ColorRect" parent="panel/new_game/vertical/players/square"]
-material = ExtResource( 6 )
+[node name="square" parent="panel/new_game/vertical/players/square" instance=ExtResource( 12 )]
+visible = true
+anchor_right = 0.0
+anchor_bottom = 0.0
 margin_right = 96.0
 margin_bottom = 96.0
 

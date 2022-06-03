@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=2]
 
-[sub_resource type="Shader" id=1]
+[sub_resource type="Shader" id=7]
 code = "shader_type canvas_item;
 
 
@@ -8,22 +8,26 @@ const float WIDTH = 0.125;
 
 
 void fragment() {
-	COLOR = vec4(vec3(1.0, 0.375, 0.0), float(
+	if (
 		abs(1.0 - UV.y) <= WIDTH ||
 		abs(1.0 - UV.x) <= WIDTH ||
 		abs(UV.x) <= WIDTH ||
 		abs(UV.y) <= WIDTH
-	));
+	) {
+		COLOR.rgb = vec3(1.0, 0.375, 0.0);
+	} else {
+		COLOR.rgb = vec3(0.0);
+	}
 }
 "
 
-[sub_resource type="ShaderMaterial" id=2]
-shader = SubResource( 1 )
+[sub_resource type="ShaderMaterial" id=8]
+shader = SubResource( 7 )
 
 [node name="square" type="ColorRect"]
 visible = false
 modulate = Color( 2, 2, 2, 1 )
-material = SubResource( 2 )
+material = SubResource( 8 )
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2

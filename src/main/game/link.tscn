@@ -4,7 +4,7 @@
 [ext_resource path="res://main/game/icon_container.tscn" type="PackedScene" id=6]
 
 [node name="link" type="Line2D"]
-width = 2.0
+width = 3.0
 default_color = Color( 1, 1, 1, 1 )
 script = ExtResource( 1 )
 

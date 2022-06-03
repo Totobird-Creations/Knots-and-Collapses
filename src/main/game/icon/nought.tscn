@@ -8,10 +8,12 @@ const float WIDTH = 0.125;
 
 
 void fragment() {
-	COLOR = vec4(vec3(0.0, 0.5, 1.0), float(
-		distance(UV, vec2(0.5)) <= 0.5 &&
-		distance(UV, vec2(0.5)) >= 0.5 - WIDTH
-	));
+	COLOR.a = float(distance(UV, vec2(0.5)) <= 0.5);
+	if (distance(UV, vec2(0.5)) >= 0.5 - WIDTH) {
+		COLOR.rgb = vec3(0.0, 0.5, 1.0);
+	} else {
+		COLOR.rgb = vec3(0.0);
+	}
 }
 "
 

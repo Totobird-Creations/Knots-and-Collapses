@@ -175,33 +175,33 @@ func add_pending_link() -> void:
 	pending_link = instance
 
 
-func loop_found(links : Array, source : Node, passed : Array = []) -> bool:
+func loop_found(given_links : Array, source : Node, passed : Array = []) -> bool:
 	if (source in passed):
 		return true
-	for link in links:
+	for link in given_links:
 		if (link[0] == source):
-			var new_links := links.duplicate()
+			var new_links := given_links.duplicate()
 			new_links.erase(link)
 			if (loop_found(new_links, link[1], passed + [source])):
 				return true
 		if (link[1] == source):
-			var new_links := links.duplicate()
+			var new_links := given_links.duplicate()
 			new_links.erase(link)
 			if (loop_found(new_links, link[0], passed + [source])):
 				return true
 	return false
 
 
-func collapse(links : Array, source : Node, side : int, skip : Array = [], method : String = "set_side") -> Array:
+func collapse(given_links : Array, source : Node, side : int, skip : Array = [], method : String = "set_side") -> Array:
 	if (source in skip):
 		return []
 	var res := [source]
 	source.call(method, side)
-	for link in links:
+	for link in given_links:
 		if (link[0] == source):
-			res += collapse(links, link[1], link[2], skip + [source], method)
+			res += collapse(given_links, link[1], link[2], skip + [source], method)
 		if (link[1] == source):
-			res += collapse(links, link[0], link[2], skip + [source], method)
+			res += collapse(given_links, link[0], link[2], skip + [source], method)
 	return res
 
 
@@ -229,6 +229,22 @@ func update_wins() -> void:
 		$panel/winner/animation.play("main")
 		$panel/fade/animation.play("main")
 		playing = false
+
+
+
+func update_hints(next_slot : Node) -> void:
+	if (next_slot && pending_link):
+		var source := [pending_link_slot, next_slot, pending_link.side]
+		if (loop_found(links + [source], next_slot)):
+#warning-ignore:return_value_discarded
+			collapse(links, next_slot, turn, [], "set_hint_side")
+	clear_hints()
+
+
+func clear_hints() -> void:
+	for small_board in $horizontal/board_container/board_margin/board.get_children():
+		for slot in small_board.get_node("grid").get_children():
+			slot.set_hint_side(-1)
 
 
 
@@ -261,6 +277,7 @@ func calculate_winner() -> Array:
 			found[trbl[0]] = 0
 		found[trbl[0]] += 1
 	# Return found winner
+#warning-ignore:return_value_discarded
 	found.erase(-1)
 	return found.keys()
 

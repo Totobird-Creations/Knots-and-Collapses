@@ -561,6 +561,15 @@ material = ExtResource( 5 )
 margin_right = 96.0
 margin_bottom = 96.0
 
+[node name="button" type="Button" parent="panel/new_game/vertical/players/cross"]
+margin_right = 96.0
+margin_bottom = 96.0
+custom_styles/hover = SubResource( 13 )
+custom_styles/pressed = SubResource( 13 )
+custom_styles/focus = SubResource( 13 )
+custom_styles/disabled = SubResource( 13 )
+custom_styles/normal = SubResource( 13 )
+
 [node name="nought" type="AspectRatioContainer" parent="panel/new_game/vertical/players"]
 margin_left = 472.0
 margin_right = 568.0
@@ -685,6 +694,7 @@ environment = SubResource( 1 )
 [connection signal="pressed" from="horizontal/menu/vertical/new_game" to="." method="show_reset" binds= [ true ]]
 [connection signal="pressed" from="panel/winner/vertical/new_game" to="." method="show_reset" binds= [ false, false ]]
 [connection signal="pressed" from="panel/winner/vertical/new_game" to="panel/winner/animation" method="play_backwards" binds= [ "main" ]]
+[connection signal="pressed" from="panel/new_game/vertical/players/cross/button" to="." method="set_player_count" binds= [ 2 ]]
 [connection signal="pressed" from="panel/new_game/vertical/players/nought/button" to="." method="set_player_count" binds= [ 2 ]]
 [connection signal="pressed" from="panel/new_game/vertical/players/triangle/button" to="." method="set_player_count" binds= [ 3 ]]
 [connection signal="pressed" from="panel/new_game/vertical/players/square/button" to="." method="set_player_count" binds= [ 4 ]]
